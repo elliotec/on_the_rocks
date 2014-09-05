@@ -1,6 +1,19 @@
 #!/usr/bin/env ruby
 
 require 'on_the_rocks'
-rocks = Installer.new
 
-puts 'rocks.bourbon_install'
+rocks = OnTheRocks::Installer.new
+
+`bourbon install`
+
+rocks.sassify
+
+`neat install`
+
+`cd #{@sassdir}`
+
+`bitters install`
+
+rocks.rm_gridsettings
+
+rocks.write_imports
