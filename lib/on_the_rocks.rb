@@ -1,4 +1,4 @@
-require "on_the_rocks/version"
+#require "on_the_rocks/version"
 
 module OnTheRocks
 
@@ -11,21 +11,21 @@ module OnTheRocks
     end
 
     def bourbon_install
-      puts `bourbon install` 
+      `bourbon install` 
     end
 
     def truncate
-      puts `mv app/assets/stylesheets/application.css #{@sasspath}` 
+      `mv app/assets/stylesheets/application.css #{@sasspath}` 
       File.truncate(@sasspath, 0)
     end
 
     def neat_install
-      puts `neat install`
+      `neat install`
     end
 
     def bitters_install
-      puts `cd #{@sassdir}`
-      puts `bitters install`
+      `cd #{@sassdir}`
+      `bitters install`
     end
 
     def grid_remove
@@ -38,9 +38,9 @@ module OnTheRocks
       )
     end
     def write_imports
-      puts `echo -e "@import\\ 'bourbon';\\n@import\\ 'base/grid_settings';\\n
-        @import\\ 'neat';\\n@import\\ 'base/base';\\n\\n//\\ All\\ other\\ imports
-        >>#{@sasspath}"`
+      `echo -e "@import\\ 'bourbon';\\n@import\\ 'base/grid_settings';\\n
+      @import\\ 'neat';\\n@import\\ 'base/base';\\n\\n//\\ All\\ other\\ imports
+      >>#{@sasspath}"`
     end
   end
 end

@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'on_the_rocks'
+rocks = Installer.new
+
+puts 'rocks.bourbon_install'
