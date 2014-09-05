@@ -8,12 +8,6 @@ rocks = OnTheRocks::Installer.new
 
 rocks.sassify
 
-`neat install`
-
-`cd #{@sassdir}`
-
-`bitters install`
-
-rocks.rm_gridsettings
+rocks.neat_bitters
 
 rocks.write_imports
