@@ -24,8 +24,8 @@ module OnTheRocks
     end
 
     def add_mainsass
-      unless File.exist?('#{@mainsass}')
-        FileUtils.touch '#{@mainsass}'
+      unless File.exist?(@mainsass)
+        FileUtils.touch(@mainsass)
       end
       File.truncate(@mainsass, 0)
     end
