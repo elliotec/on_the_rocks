@@ -1,28 +1,38 @@
 require "on_the_rocks/version"
-require "open-uri"
 require "fileutils"
+require "thor"
 
 module OnTheRocks
+  class Generator < Thor
 
-  class Installer
-
-    def initialize
-      @sassdir = "app/assets/stylesheets/"
-      @oldcss= "app/assets/stylesheets/application.css"
-      @sasspath = "app/assets/stylesheets/application.css.scss"
+    def initialize(sassdir="app/assets/stylesheets/", oldcss="app/assets/stylesheets/application.css", mainsass="app/assets/stylesheets/application.css.scss")
+      @sassdir = sassdir
+      @oldcss= oldcss
+      @mainsass = mainsass
       #@base = "app/assets/stylesheets/base/_base.scss"
+    end
+
+    def normalize
+      FileUtils.install "*/normalize.css", "#{@sassdir}normalize.css"
     end
 
     def sassify
       if File.exist?('#{@oldcss}')
-        `mv #{@oldcss} #{@sasspath}`
+        FileUtils.mv '#{@oldcss}', '#{@mainsass}'
       end
-      File.truncate(@sasspath, 0)
+
+      unless File.exist?('#{@mainsass}')
+        FileUtils.mkdir_p '#{@sassdir}'
+        FileUtils.touch '#{@mainsass}'
+      end
+
+      File.truncate(@mainsass, 0)
     end
 
-    def neat_bitters
+    def install_files
+      `bourbon_install`
       `neat install`
-      `cd app/assets/stylesheets/ && bitters install`
+      `cd #{@sassdir} && bitters install`
     end
 
     # def remove_gridsettings

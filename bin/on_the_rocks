@@ -2,10 +2,9 @@
 
 require 'on_the_rocks'
 
-rocks = OnTheRocks::Installer.new
+rocks = OnTheRocks::Generator.new
 
-`bourbon install`
-
+rocks.normalize
 rocks.sassify
-rocks.neat_bitters
+rocks.install_files
 rocks.write_imports
