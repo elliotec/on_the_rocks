@@ -1,10 +1,9 @@
 require 'test_helper'
 
-class InstallerTest < MiniTest::Unit::TestCase
+class GeneratorTest < MiniTest::Unit::TestCase
 
   def setup
-    @installer = Installer.new
+    @generator = Generator.new
   end
 
-  def 
 end
