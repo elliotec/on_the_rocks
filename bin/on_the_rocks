@@ -7,7 +7,5 @@ rocks = OnTheRocks::Installer.new
 `bourbon install`
 
 rocks.sassify
-
 rocks.neat_bitters
-
 rocks.write_imports

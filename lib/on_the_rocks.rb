@@ -10,7 +10,7 @@ module OnTheRocks
       @sassdir = "app/assets/stylesheets/"
       @oldcss= "app/assets/stylesheets/application.css"
       @sasspath = "app/assets/stylesheets/application.css.scss"
-      @base = "app/assets/stylesheets/base/_base.scss"
+      #@base = "app/assets/stylesheets/base/_base.scss"
     end
 
     def sassify
@@ -25,11 +25,11 @@ module OnTheRocks
       `cd app/assets/stylesheets/ && bitters install`
     end
 
-    def remove_gridsettings
-      @grid = Regexp.escape("// @import 'grid_settings';")
+    # def remove_gridsettings
+    #   @grid = Regexp.escape("// @import 'grid_settings';")
 
-      IO.write(@base, File.open(@base) { |file| file.read.gsub(/#{@grid}/, "") })
-    end
+    #   IO.write(@base, File.open(@base) { |file| file.read.gsub(/#{@grid}/, "") })
+    # end
 
     def write_imports
       `echo "@import 'bourbon';\n@import 'base/grid_settings';\n@import 'neat';\n@import 'base/base';\n\n// All other imports">>#{@sasspath}`
