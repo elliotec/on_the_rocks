@@ -3,37 +3,49 @@ require "fileutils"
 
 module OnTheRocks
   class Generator
-    def initialize(sassdir="app/assets/stylesheets/", oldcss="app/assets/stylesheets/application.css", mainsass="app/assets/stylesheets/application.css.scss")
-      @sassdir = sassdir
-      @oldcss= oldcss
-      @mainsass = mainsass
-      #@base = "app/assets/stylesheets/base/_base.scss"
+    def initialize(arguments)
+      @subcommand = arguments.first
+      @sassdir = "app/assets/stylesheets/"
+      @oldcss= "app/assets/stylesheets/application.css"
+      @mainsass = "app/assets/stylesheets/application.css.scss"
+    end
+
+    def run
+      if @subcommand == "install"
+        install
+      end
+    end
+
+    def install
+      normalize
+      sassify
+      install_files
+      declare_imports
     end
 
     def normalize
-      unless File.exist?("normalize.css")
+      unless File.exist?("#{@sassdir}normalize.css")
         FileUtils.cp_r(all_stylesheets, @sassdir)
       end
       puts "Normlalized."
     end
 
     def sassify
-      if File.exist?('#{@oldcss}')
-        FileUtils.mv '#{@oldcss}', '#{@mainsass}'
-      end
-    end
-
-    def add_mainsass
-      unless File.exist?(@mainsass)
+      if File.exist?(@oldcss) && ! File.exist?(@mainsass)
+        FileUtils.cp(@oldcss, "#{@oldcss}.old")
+        FileUtils.mv(@oldcss, @mainsass)
+        puts "Renamed old css file."
+      else
         FileUtils.touch(@mainsass)
+        puts "Created main Sass file."
       end
-      File.truncate(@mainsass, 0)
     end
 
     def install_files
-      `bourbon_install`
+      `bourbon install`
       `neat install`
-      `cd #{@sassdir} && bitters install`
+      FileUtils.cd(@sassdir)
+      `bitters install`
       puts "Installed Bourbon, Neat, and Bitters files."
     end
 
@@ -49,14 +61,10 @@ module OnTheRocks
       File.dirname(File.dirname(File.dirname(__FILE__)))
     end
 
-    # def remove_gridsettings
-    #   @grid = Regexp.escape("// @import 'grid_settings';")
-
-    #   IO.write(@base, File.open(@base) { |file| file.read.gsub(/#{@grid}/, "") })
-    # end
-
-    def write_imports
-      `echo "@import 'normalize';\n@import 'bourbon';\n@import 'base/grid_settings';\n@import 'neat';\n@import 'base/base';\n\n// All other imports">>#{@sasspath}`
+    def declare_imports
+      File.truncate(@mainsass, 0)
+      `echo "@import 'normalize';\n@import 'bourbon';\n@import 'base/grid_settings';\n@import 'neat';\n@import 'base/base';\n\n// All other imports">>#{@mainsass}`
+      puts "Declared imports."
     end
   end
 end

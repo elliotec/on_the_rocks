@@ -2,10 +2,4 @@
 
 require 'on_the_rocks'
 
-rocks = OnTheRocks::Generator.new
-
-rocks.normalize
-rocks.sassify
-rocks.add_mainsass
-rocks.install_files
-rocks.write_imports
+OnTheRocks::Generator.new(ARGV).run
