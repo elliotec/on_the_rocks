@@ -1,5 +1,5 @@
 require 'on_the_rocks'
-require 'minitest/unit'
+require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/pride'
 

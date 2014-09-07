@@ -23,10 +23,11 @@ module OnTheRocks
     end
 
     def normalize
-      unless File.exist?("#{@sassdir}normalize.css")
-        FileUtils.cp_r(all_stylesheets, @sassdir)
-        puts "Normlalized."
+      if File.exist?("#{@sassdir}normalize.css")
+        FileUtils.mv("#{@sassdir}normalize.css", "#{@sassdir}normalize.css.old")
       end
+      FileUtils.cp_r(all_stylesheets, @sassdir)
+      puts "Normlalized."
     end
 
     def install_files
@@ -42,7 +43,7 @@ module OnTheRocks
       rename_oldcss
       new_mainsass
       File.truncate(@mainsass, 0)
-      declare_imports  
+      imports  
     end
 
     def rename_oldcss
@@ -61,9 +62,9 @@ module OnTheRocks
       end
     end
 
-    def declare_imports
+    def imports
       `echo "@import 'normalize';\n@import 'bourbon';\n@import 'base/grid_settings';\n@import 'neat';\n@import 'base/base';\n\n// All other imports">>#{@mainsass}`
-      puts "Declared imports."
+      puts "Imported imports."
     end
 
     def all_stylesheets

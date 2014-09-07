@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class GeneratorTest < MiniTest::Unit::TestCase
+describe Generator, "Generating on_the_rocks" do
 
-  def setup
+  before do
     @generator = Generator.new
   end
 
