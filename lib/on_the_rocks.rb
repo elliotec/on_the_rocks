@@ -18,35 +18,52 @@ module OnTheRocks
 
     def install
       normalize
-      sassify
       install_files
-      declare_imports
+      sassify
     end
 
     def normalize
       unless File.exist?("#{@sassdir}normalize.css")
         FileUtils.cp_r(all_stylesheets, @sassdir)
+        puts "Normlalized."
       end
-      puts "Normlalized."
+    end
+
+    def install_files
+      FileUtils.cd(@sassdir) do
+        `bourbon install`
+        `neat install`
+        `bitters install`
+      end
+      puts "Installed Bourbon, Neat, and Bitters files."
     end
 
     def sassify
-      if File.exist?(@oldcss) && ! File.exist?(@mainsass)
+      rename_oldcss
+      new_mainsass
+      File.truncate(@mainsass, 0)
+      declare_imports  
+    end
+
+    def rename_oldcss
+      if File.exist?(@oldcss) && File.exist?(@mainsass) == false
         FileUtils.cp(@oldcss, "#{@oldcss}.old")
         FileUtils.mv(@oldcss, @mainsass)
         puts "Renamed old css file."
-      else
+      end
+    end
+
+    def new_mainsass
+      unless File.exist?(@mainsass)
+        FileUtils.mkdir_p(@sassdir)
         FileUtils.touch(@mainsass)
         puts "Created main Sass file."
       end
     end
 
-    def install_files
-      `bourbon install`
-      `neat install`
-      FileUtils.cd(@sassdir)
-      `bitters install`
-      puts "Installed Bourbon, Neat, and Bitters files."
+    def declare_imports
+      `echo "@import 'normalize';\n@import 'bourbon';\n@import 'base/grid_settings';\n@import 'neat';\n@import 'base/base';\n\n// All other imports">>#{@mainsass}`
+      puts "Declared imports."
     end
 
     def all_stylesheets
@@ -59,12 +76,6 @@ module OnTheRocks
 
     def top_level_directory
       File.dirname(File.dirname(File.dirname(__FILE__)))
-    end
-
-    def declare_imports
-      File.truncate(@mainsass, 0)
-      `echo "@import 'normalize';\n@import 'bourbon';\n@import 'base/grid_settings';\n@import 'neat';\n@import 'base/base';\n\n// All other imports">>#{@mainsass}`
-      puts "Declared imports."
     end
   end
 end
