@@ -2,4 +2,4 @@
 
 require 'on_the_rocks'
 
-OnTheRocks::Generator.new(ARGV).run
+OnTheRocks::Generator.new.start

@@ -3,17 +3,14 @@ require "fileutils"
 
 module OnTheRocks
   class Generator
-    def initialize(arguments)
-      @subcommand = arguments.first
+    def initialize
       @sassdir = "app/assets/stylesheets/"
       @oldcss= "app/assets/stylesheets/application.css"
       @mainsass = "app/assets/stylesheets/application.css.scss"
     end
 
-    def run
-      if @subcommand == "install"
-        install
-      end
+    def start
+      install
     end
 
     def install
